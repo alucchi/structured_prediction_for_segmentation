@@ -1,0 +1,5 @@
+trainingDir=datasets/imagesLeft_35-199_top/
+maskTrainingDir=datasets/masksLeft_35-199_top/
+testDir=datasets/imagesLeft_35-199_bottom/
+maskTestDir=datasets/masksLeft_35-199_bottom/
+

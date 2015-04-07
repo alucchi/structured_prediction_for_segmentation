@@ -1,0 +1,25 @@
+--- ./Code/Common/itkSymmetricEigenAnalysis.txx	2013-03-07 19:51:41.332345000 +0100
++++ ./Code/Common/itkSymmetricEigenAnalysis.txx.bak	2013-03-07 19:51:03.046009000 +0100
+@@ -512,9 +512,9 @@
+         {
+         if (vnl_math_abs(p) >= vnl_math_abs(d[i-1]))
+           break;
+-        d[i] = d[i-1];
++        d[i] = vnl_math_abs(d[i-1]);
+         }
+-      d[i] = p;
++      d[i] = vnl_math_abs(p);
+       }
+     else
+       {
+@@ -708,8 +708,8 @@
+         {
+         continue;
+         }
+-      d[k] = d[i];
+-      d[i] = p;
++      d[k] = vnl_math_abs(d[i]);
++      d[i] = vnl_math_abs(p);
+ 
+       for (j = 0; j < m_Order; ++j) 
+         {
