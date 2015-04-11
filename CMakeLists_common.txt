@@ -15,11 +15,11 @@ elseif(UNIX)
   set(CMAKE_CXX_COMPILER "g++")
 endif()
 
-// Release mode
+# Release mode
 SET(CMAKE_BUILD_TYPE Release)
 #SET(CMAKE_BUILD_TYPE Debug)
 
-// Advanced options
+# Advanced options
 option(USE_ITK "use ITK library" on)
 mark_as_advanced(USE_ITK)
 option(USE_LIBDAI "use libdai library" on)
@@ -59,8 +59,8 @@ endif(USE_ITK)
 
 ######################################################### THIRD-PARTY LIBRARIES
 
-set(ITK_DIR "~/src/ThirdParty/InsightToolkit-3.20.1/build")
-set(OpenCV_DIR ~/src/ThirdParty/OpenCV-2.4.2/)
+set(ITK_DIR "~/src/InsightToolkit-4.7.1/build")
+set(OpenCV_DIR "~/src/opencv-3.0.0-alpha")
 
 ###################################################################### PACKAGES
 
