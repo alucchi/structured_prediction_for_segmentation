@@ -1,6 +1,5 @@
 cmake_policy(SET CMP0011 NEW)
 cmake_policy(SET CMP0012 NEW)
-#cmake_policy(SET CMP0003 NEW)
 
 INCLUDE_REGULAR_EXPRESSION("^.*$")
 
@@ -16,9 +15,11 @@ elseif(UNIX)
   set(CMAKE_CXX_COMPILER "g++")
 endif()
 
+// Release mode
 SET(CMAKE_BUILD_TYPE Release)
 #SET(CMAKE_BUILD_TYPE Debug)
 
+// Advanced options
 option(USE_ITK "use ITK library" on)
 mark_as_advanced(USE_ITK)
 option(USE_LIBDAI "use libdai library" on)
@@ -54,25 +55,21 @@ set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -D USE_REVERSE_INDEXING")
 
 if(USE_ITK)
   set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS}   -D USE_ITK")
-  set(ITK_DIR "/home/lucchi/src/ThirdParty/InsightToolkit-3.20.1/build")
-  message(${ITK_DIR})
 endif(USE_ITK)
+
+######################################################### THIRD-PARTY LIBRARIES
+
+set(ITK_DIR "~/src/ThirdParty/InsightToolkit-3.20.1/build")
+set(OpenCV_DIR ~/src/ThirdParty/OpenCV-2.4.2/)
 
 ###################################################################### PACKAGES
 
-#SET(OpenCV_FIND_COMPONENTS   CV CXCORE CVAUX HIGHGUI ML)
-#SET(OpenCV_FIND_REQUIRED_COMPONENTS   CV CXCORE CVAUX HIGHGUI ML)
-#set(OpenCV_DIR ~/src/third_party/opencv-2.4.9/)
-set(OpenCV_DIR ~/src/ThirdParty/OpenCV-2.4.2/)
+# Open CV
 #include_directories(${OpenCV_DIR}/include/)
 #include_directories(${OpenCV_DIR}/include/opencv/)
 FIND_PACKAGE(OpenCV REQUIRED)
 # add include directories
 include_directories(${OPENCV_INCLUDE_DIR})
-#find_library(ML_LIBRARY NAMES opencv_ml PATHS ${OpenCV_DIR}/lib/)
-#find_library(ML_LIBRARY NAMES ml PATHS ${OpenCV_DIR}/lib/)
-#SET(OpenCV_LIBS ${OpenCV_LIBS} ${ML_LIBRARY})
-message("OpenCV")
 message(STATUS ${OpenCV_LIBS})
 message(STATUS ${OpenCV_LIBRARIES})
 SET(OpenCV_LIBS ${OpenCV_LIBRARIES})
