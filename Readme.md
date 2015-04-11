@@ -45,7 +45,7 @@ Step-by-step instructions:
 
 4. Main code
 
-	You can edit `CMakeLists_common.txt` or just change the flags with the ccmake interface.
+	Edit the variables in the "THIRD-PARTY LIBRARIES" section in `CMakeLists_common.txt` (you can also use the ccmake interface).
 	You might want to turn off some of the dependencies. Look at the `USE_???` flags.
 
 	Go to the `superpixels_public` directory and compile with
