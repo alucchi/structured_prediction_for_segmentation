@@ -30,7 +30,7 @@ Step-by-step instructions:
 	
 	- OpenCv (Install package opencv-dev in Ubuntu or download from [http://opencv.org](http://opencv.org))
 	- [zlib](http://www.zlib.net/)
-	- SLIC: Go to `lib/slic` and type `cmake .; make`
+	- SLIC: Go to `lib/slic`. Open CMakeLists.txt and change the OpenCV_DIR variable. Type `cmake .; make` to build the slic library.
 	- ITK : Download from the web site and set review flag to `ON` (can be done by using advanced mode with ccmake and settting variable `USE_REVIEW` to ON).
 	- Go to `lib/libDAI-0.2.4` and type `make`. Note that `libDAI` requires the following dependencies for Ubuntu:
 	 `sudo apt-get install g++ make doxygen graphviz libboost-dev libboost-graph-dev libboost-program-options-dev`
