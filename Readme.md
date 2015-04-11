@@ -31,7 +31,7 @@ Step-by-step instructions:
 	- OpenCv (Install package opencv-dev in Ubuntu or download from [http://opencv.org](http://opencv.org))
 	- [zlib](http://www.zlib.net/)
 	- SLIC: Go to `lib/slic`. Open CMakeLists.txt and change the OpenCV_DIR variable. Type `cmake .; make` to build the slic library.
-	- [ITK](http://itk.org) : Download from the [ITK web site](http://www.itk.org/ITK/resources/software.html) and set review flag to `ON` (can be done by using advanced mode with ccmake and settting variable `USE_REVIEW` to ON).
+	- [ITK](http://itk.org) : Download from the [ITK web site](http://www.itk.org/ITK/resources/software.html) and set review flag to `ON`. This can be done by using the advanced mode with ccmake and settting the variable `USE_REVIEW` to ON.
 	- Go to `lib/libDAI-0.2.4` and type `make`. Note that `libDAI` requires the following dependencies for Ubuntu:
 	 `sudo apt-get install g++ make doxygen graphviz libboost-dev libboost-graph-dev libboost-program-options-dev`
 	 
@@ -39,7 +39,7 @@ Step-by-step instructions:
 	
 	- [OpenCV](http://opencv.org): download archive from web site. Then create makefile with cmake and compile with `MSBuild.exe opencv.sln`
 	- SLIC: Go to `lib/slic` and type `cmake .; make`
-	- [ITK](http://itk.org): Download from the [ITK web site](http://www.itk.org/ITK/resources/software.html) and set review flag to `ON` (can be done by using advanced mode with ccmake and settting variable `USE_REVIEW` to `ON`).
+	- [ITK](http://itk.org): Download from the [ITK web site](http://www.itk.org/ITK/resources/software.html) and set review flag to `ON`. This can be done by using the advanced mode with ccmake and settting the variable `USE_REVIEW` to ON.
 	- Go to `lib/libDAI-0.2.4` and type `cmake` and `MSBuild.exe dai.sln`. Note that `libDAI` requires `boost`.
 	- [OPTIONAL] Install `7-zip` to compress intermediary results
 
