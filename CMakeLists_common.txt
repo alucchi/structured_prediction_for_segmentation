@@ -52,11 +52,12 @@ set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -D WITH_PNG -D WITH_OPENMP")
 set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -D USE_REVERSE_INDEXING")
 #set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -std=c++0x -std=gnu++0x")
 
-if(USE_ITK)
-  set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS}   -D USE_ITK")
-  set(ITK_DIR "/home/lucchi/src/ThirdParty/InsightToolkit-3.20.1/build")
-  message(${ITK_DIR})
-endif(USE_ITK)
+#This is not generic. Let the user set ITK_DIR as environment variable or throught ccmake
+#if(USE_ITK)
+#  set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS}   -D USE_ITK")
+#  set(ITK_DIR "/home/lucchi/src/ThirdParty/InsightToolkit-3.20.1/build")
+#  message(${ITK_DIR})
+#endif(USE_ITK)
 
 ###################################################################### PACKAGES
 
@@ -85,6 +86,7 @@ find_library(SUPERPIXEL_LIBRARY NAMES supervoxel PATHS ${SLICEME_DIR}/lib/slic/
 # ITK
 if(USE_ITK)
 find_package(ITK REQUIRED)
+set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS}   -D USE_ITK")
 endif(USE_ITK)
 
 ###################################################################### INCLUDES
@@ -102,14 +104,19 @@ include_directories(${SLICEME_DIR}/lib/slic/)
 if(USE_ITK)
 IF(ITK_FOUND)
   INCLUDE(${ITK_USE_FILE})
+  # include itk aux
+  # lib/itkStructureTensorRecursiveGaussianImageFilter.h
+  # lib/itkStructureTensorRecursiveGaussianImageFilter.txx
+  include_directories(${SLICEME_DIR}/lib/)
 ENDIF(ITK_FOUND)
 endif(USE_ITK)
 
 # libDAI
 if(USE_LIBDAI)
 include_directories(${SLICEME_DIR}/lib/libDAI024/include/)
-find_library(LIBDAI_LIBRARY NAMES dai PATHS ${SLICEME_DIR}/lib/libDAI024/
-                                            ${SLICEME_DIR}/lib/libDAI024/build/Release/)
+find_library(LIBDAI_LIBRARY NAMES dai PATHS "${SLICEME_DIR}/lib/libDAI024/"
+                                            "${SLICEME_DIR}/lib/libDAI024/build/"
+                                            "${SLICEME_DIR}/lib/libDAI024/build/Release/")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D USE_LIBDAI")
 #libDAI requires boost/foreach.hpp ? 
 find_package(Boost 1.37.0 COMPONENTS program_options REQUIRED)
@@ -251,6 +258,8 @@ set(INFERENCE_THIRD_PARTY_LIBRARIES ${INFERENCE_THIRD_PARTY_LIBRARIES} ${ZLIB_LI
 set(SLICEME_THIRD_PARTY_LIBRARIES ${OpenCV_LIBRARIES} ${SUPERPIXEL_LIBRARY} ${INFERENCE_THIRD_PARTY_LIBRARIES})
 
 if(USE_ITK)
-set(SLICEME_THIRD_PARTY_LIBRARIES ${SLICEME_THIRD_PARTY_LIBRARIES} ITKIO ITKStatistics)
-endif(USE_ITK)
+    if( ${ITK_VERSION_MAJOR} VERSION_LESS "4.0")
+        set(SLICEME_THIRD_PARTY_LIBRARIES ${SLICEME_THIRD_PARTY_LIBRARIES} ITKIO ITKStatistics)
+    endif()
+endif()
 
