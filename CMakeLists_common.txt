@@ -69,6 +69,10 @@ include_directories(${OpenCV_DIR}/include/)
 include_directories(${OpenCV_DIR}/include/opencv/)
 include_directories(${OpenCV_DIR}/standalone/include/)
 include_directories(${OpenCV_DIR}/standalone/include/opencv/)
+
+include_directories(${OpenCV_DIR}/3rdparty/zlib)
+message(STATUS "opencv's ZLIB include dir: ${OpenCV_DIR}/3rdparty/zlib") 
+
 FIND_PACKAGE(OpenCV REQUIRED)
 # add include directories
 include_directories(${OPENCV_INCLUDE_DIR})
@@ -151,14 +155,17 @@ find_library(SIFT_LIBRARY NAMES sift PATHS ${SLICEME_DIR}/lib/siftpp/g64)
 include_directories(${SLICEME_DIR}/lib/siftpp)
 endif(USE_SIFT)
 
-find_package(ZLIB)
-if(NOT ZLIB_FOUND)
-set(ZLIB_INCLUDE_DIRS ${SLICEME_DIR}/lib/zlib-1.2.3-lib/include)
-set(ZLIB_LIBRARIES ${SLICEME_DIR}/lib/zlib-1.2.3-lib/lib/zlib.lib)
-endif()
+#find_package(ZLIB)
+#if(NOT ZLIB_FOUND)
+#set(ZLIB_INCLUDE_DIRS ${SLICEME_DIR}/lib/zlib-1.2.3-lib/include CACHE STRING "zlib include dir")
+#set(ZLIB_LIBRARIES ${SLICEME_DIR}/lib/zlib-1.2.3-lib/lib/zlib.lib CACHE STRING "zlib lib")
+#else()
+#set(ZLIB_INCLUDE_DIRS ${ZLIB_INCLUDE_DIR} CACHE STRING "zlib include dir")
+#set(ZLIB_LIBRARIES ${ZLIB_LIBRARY} CACHE STRING "zlib lib")
+#endif()
 
 include_directories(${ZLIB_INCLUDE_DIRS})
-message(status "zlib include dirs: ${ZLIB_INCLUDE_DIRS}")
+message(STATUS "zlib include dir: ${ZLIB_INCLUDE_DIRS}")
 
 ####################################################################### OPTIONS
 
