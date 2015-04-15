@@ -30,6 +30,9 @@ Step-by-step instructions:
 	
 	- OpenCv (Install package opencv-dev in Ubuntu or download from [http://opencv.org](http://opencv.org))
 	- [zlib](http://www.zlib.net/)
+	
+	If you have problems with zlib, we recommend using the one shipped as a 3rdparty within `opencv`. Set `ZLIB_INCLUDE_DIR` to `3rdparty/zlib` and `ZLIB_LIBRARY` to `build/3rdpartz/lib/zlib.lib`
+	
 	- SLIC: Go to `lib/slic` and type `cmake .; make`
 	- ITK : Download from the web site and set review flag to `ON` (can be done by using advanced mode with ccmake and settting variable `USE_REVIEW` to ON).
 	- Go to `lib/libDAI-0.2.4` and type `make`. Note that `libDAI` requires the following dependencies for Ubuntu:
@@ -38,6 +41,10 @@ Step-by-step instructions:
 	**WINDOWS**
 	
 	- [OpenCV](http://opencv.org): download archive from web site. Then create makefile with cmake and compile with `MSBuild.exe opencv.sln`
+	- [zlib](http://www.zlib.net/)
+	
+	If you have problems with zlib, we recommend using the one shipped as a 3rdparty within `opencv`. Set `ZLIB_INCLUDE_DIR` to `3rdparty/zlib` and `ZLIB_LIBRARY` to `build/3rdparty/lib/Release/zlib.lib`
+	
 	- SLIC: Go to `lib/slic` and type `cmake .; make`
 	- [ITK](http://itk.org): Download from the web site and set review flag to `ON` (can be done by using advanced mode with ccmake and settting variable `USE_REVIEW` to `ON`).
 	- Go to `lib/libDAI-0.2.4` and type `cmake` and `MSBuild.exe dai.sln`. Note that `libDAI` requires `boost`.

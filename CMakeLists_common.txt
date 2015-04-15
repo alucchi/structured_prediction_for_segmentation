@@ -65,25 +65,18 @@ set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -D USE_REVERSE_INDEXING")
 #SET(OpenCV_FIND_REQUIRED_COMPONENTS   CV CXCORE CVAUX HIGHGUI ML)
 #set(OpenCV_DIR ~/src/third_party/opencv-2.4.9/)
 set(OpenCV_DIR ~/src/ThirdParty/OpenCV-2.4.2/ CACHE STRING "opencv dir path" )
-include_directories(${OpenCV_DIR}/include/)
-include_directories(${OpenCV_DIR}/include/opencv/)
-include_directories(${OpenCV_DIR}/standalone/include/)
-include_directories(${OpenCV_DIR}/standalone/include/opencv/)
 
-include_directories(${OpenCV_DIR}/3rdparty/zlib)
-message(STATUS "opencv's ZLIB include dir: ${OpenCV_DIR}/3rdparty/zlib") 
+include_directories(${OPENCV_INCLUDE_DIRS_EXTRA}) 
 
 FIND_PACKAGE(OpenCV REQUIRED)
 # add include directories
-include_directories(${OPENCV_INCLUDE_DIR})
+include_directories(${OpenCV_INCLUDE_DIRS})
 #find_library(ML_LIBRARY NAMES opencv_ml PATHS ${OpenCV_DIR}/lib/)
 #find_library(ML_LIBRARY NAMES ml PATHS ${OpenCV_DIR}/lib/)
 #SET(OpenCV_LIBS ${OpenCV_LIBS} ${ML_LIBRARY})
-message(STATUS "OpenCV DIR: ${OpenCV_DIR}")
-message(STATUS "OpenCV include dir: ${OPENCV_INCLUDE_DIR}")
-##message(STATUS ${OpenCV_LIBS})
-#message(STATUS ${OpenCV_LIBRARIES})
-SET(OpenCV_LIBS ${OpenCV_LIBRARIES})
+#message(STATUS "OpenCV DIR: ${OpenCV_DIR}")
+#message(STATUS "OpenCV include dir: ${OpenCV_INCLUDE_DIRS}")
+#message(STATUS "OpenCV libs: ${OpenCV_LIBS}")
 
 #Superpixel library
 find_library(SUPERPIXEL_LIBRARY NAMES supervoxel PATHS ${SLICEME_DIR}/lib/slic/
@@ -155,7 +148,7 @@ find_library(SIFT_LIBRARY NAMES sift PATHS ${SLICEME_DIR}/lib/siftpp/g64)
 include_directories(${SLICEME_DIR}/lib/siftpp)
 endif(USE_SIFT)
 
-#find_package(ZLIB)
+find_package(ZLIB REQUIRED)
 #if(NOT ZLIB_FOUND)
 #set(ZLIB_INCLUDE_DIRS ${SLICEME_DIR}/lib/zlib-1.2.3-lib/include CACHE STRING "zlib include dir")
 #set(ZLIB_LIBRARIES ${SLICEME_DIR}/lib/zlib-1.2.3-lib/lib/zlib.lib CACHE STRING "zlib lib")
@@ -164,7 +157,9 @@ endif(USE_SIFT)
 #set(ZLIB_LIBRARIES ${ZLIB_LIBRARY} CACHE STRING "zlib lib")
 #endif()
 
-include_directories(${ZLIB_INCLUDE_DIRS})
+include_directories(${ZLIB_INCLUDE_DIR})
+
+#include_directories(${ZLIB_INCLUDE_DIRS})
 message(STATUS "zlib include dir: ${ZLIB_INCLUDE_DIRS}")
 
 ####################################################################### OPTIONS
@@ -261,11 +256,11 @@ ${SLICEME_DIR}/core/F_Sift.cpp
 ${SLICEME_DIR}/lib/siftpp/sift.cpp)
 endif(USE_SIFT)
 
-set(INFERENCE_THIRD_PARTY_LIBRARIES ${INFERENCE_THIRD_PARTY_LIBRARIES} ${ZLIB_LIBRARIES})
+set(INFERENCE_THIRD_PARTY_LIBRARIES ${INFERENCE_THIRD_PARTY_LIBRARIES} ${ZLIB_LIBRARIES} ${ZLIB_LIBRARY})
 
 ##################################################################### LIBRARIES
 
-set(SLICEME_THIRD_PARTY_LIBRARIES ${OpenCV_LIBRARIES} ${SUPERPIXEL_LIBRARY} ${INFERENCE_THIRD_PARTY_LIBRARIES})
+set(SLICEME_THIRD_PARTY_LIBRARIES ${OpenCV_LIBS} ${SUPERPIXEL_LIBRARY} ${INFERENCE_THIRD_PARTY_LIBRARIES})
 
 if(USE_ITK)
     if( ${ITK_VERSION_MAJOR} VERSION_LESS "4.0")
