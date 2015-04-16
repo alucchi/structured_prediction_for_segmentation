@@ -26,8 +26,6 @@
 #include <io.h>
 #include <direct.h>
 #define mkdir(x,y) _mkdir(x)
-#include <time.h>
-#include <winsock2.h>
 #include "gettimeofday.h"
 #else
 #include <unistd.h>

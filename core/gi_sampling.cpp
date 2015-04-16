@@ -25,8 +25,6 @@
 #include <gsl/gsl_randist.h>
 #else
 #ifdef _WIN32
-#include <time.h>
-#include <winsock2.h>
 #include "gettimeofday.h"
 #else
 #include <sys/time.h>
