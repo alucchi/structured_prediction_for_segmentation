@@ -8,10 +8,10 @@ INCLUDE_REGULAR_EXPRESSION("^.*$")
 
 if(WIN32)
     set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -D USE_REVERSE_INDEXING /O2")
-        #SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NODEFAULTLIB:msvcprt.lib ")
+    #SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NODEFAULTLIB:msvcprt.lib ")
 elseif(APPLE)
   set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -Wno-deprecated -msse2 -ftemplate-depth-50 -D USE_REVERSE_INDEXING ")
-  set(CMAKE_EXE_LINKER_FLAGS         "${CMAKE_LINKER_FLAGS} -Wno-deprecated -msse2 -ftemplate-depth-50")
+  set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_LINKER_FLAGS} -Wno-deprecated -msse2 -ftemplate-depth-50")
 elseif(UNIX)
   set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -D USE_REVERSE_INDEXING ")
   set(CMAKE_C_COMPILER "g++")
@@ -36,8 +36,8 @@ mark_as_advanced(USE_SIFT)
 
 
 if(WIN32)
-    SET(CMAKE_CXX_FLAGS "/DWIN32 /D_WINDOWS /w /Zi /EHsc /GR /MP /openmp ")
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /D_AMD64_ ")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /DWIN32 /D_WINDOWS /w /Zi /EHsc /GR /MP /openmp ")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /D_AMD64_ /D_WINSOCKAPI_")
 elseif(APPLE)
     set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -fopenmp")
     set(CMAKE_CXX_FLAGS_DEBUG   "-g -pg")
@@ -51,21 +51,10 @@ else()
 endif()
 
 set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -D WITH_PNG -D WITH_OPENMP")
-set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -D USE_REVERSE_INDEXING")
 #set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -std=c++0x -std=gnu++0x")
-
-#This is not generic. Let the user set ITK_DIR as environment variable or throught ccmake
-#if(USE_ITK)
-#  set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS}   -D USE_ITK")
-#  set(ITK_DIR "/home/lucchi/src/ThirdParty/InsightToolkit-3.20.1/build")
-#  message(${ITK_DIR})
-#endif(USE_ITK)
 
 ###################################################################### PACKAGES
 
-#SET(OpenCV_FIND_COMPONENTS   CV CXCORE CVAUX HIGHGUI ML)
-#SET(OpenCV_FIND_REQUIRED_COMPONENTS   CV CXCORE CVAUX HIGHGUI ML)
-#set(OpenCV_DIR ~/src/third_party/opencv-2.4.9/)
 set(OpenCV_DIR ~/src/ThirdParty/OpenCV-2.4.2/ CACHE STRING "opencv dir path" )
 
 include_directories(${OPENCV_INCLUDE_DIRS_EXTRA}) 
@@ -73,9 +62,6 @@ include_directories(${OPENCV_INCLUDE_DIRS_EXTRA})
 FIND_PACKAGE(OpenCV REQUIRED)
 # add include directories
 include_directories(${OpenCV_INCLUDE_DIRS})
-#find_library(ML_LIBRARY NAMES opencv_ml PATHS ${OpenCV_DIR}/lib/)
-#find_library(ML_LIBRARY NAMES ml PATHS ${OpenCV_DIR}/lib/)
-#SET(OpenCV_LIBS ${OpenCV_LIBS} ${ML_LIBRARY})
 #message(STATUS "OpenCV DIR: ${OpenCV_DIR}")
 #message(STATUS "OpenCV include dir: ${OpenCV_INCLUDE_DIRS}")
 #message(STATUS "OpenCV libs: ${OpenCV_LIBS}")
