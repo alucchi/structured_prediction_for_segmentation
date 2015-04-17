@@ -177,9 +177,11 @@ double GI_sampling::runOnce(labelType* inferredLabels,
 #else
   //srand(time(NULL));
 
+#ifndef NOTIME
   struct timeval _t;
   gettimeofday(&_t, NULL);
   srand(_t.tv_usec);
+#endif
 
 #endif
 
@@ -408,10 +410,11 @@ double GI_sampling::runOnce_VOC(labelType* inferredLabels,
 #else
   //srand(time(NULL));
 
+#ifndef NOTIME
   struct timeval _t;
   gettimeofday(&_t, NULL);
   srand(_t.tv_usec);
-
+#endif
 #endif
 
   int maxIter = 1;
