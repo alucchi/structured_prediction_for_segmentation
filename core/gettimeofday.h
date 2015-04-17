@@ -1,8 +1,9 @@
 #ifndef GETTIMEOFDAY_H_
 #define GETTIMEOFDAY_H_
+#warning "gettimeofday disabled: defining NOTIME "
 #define NOTIME 
 
-#if 0
+#ifndef NOTIME
 #define _WINSOCKAPI_    // stops windows.h including winsock.h
 #include <winsock2.h>
 #include <time.h>
