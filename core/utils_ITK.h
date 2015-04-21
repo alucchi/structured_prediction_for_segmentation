@@ -260,6 +260,7 @@ void connectedComponents_2d(TInputPixelType* inputData,
     }
 }
 
+#if ITK_VERSION_MAJOR < 4
 template <typename TInputPixelType>
 void getPixelList_2dComponents(TInputPixelType* inputData,
                                long nx, long ny, long nz,
@@ -358,6 +359,7 @@ void getPixelList_2dComponents(TInputPixelType* inputData,
 
   }
 }
+#endif
 
 template <typename TInputPixelType, typename InputImageType>
   typename InputImageType::Pointer ImportFilterFromRawData(TInputPixelType* inputData,

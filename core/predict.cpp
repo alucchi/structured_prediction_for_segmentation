@@ -186,7 +186,7 @@ static int parse_opt (int key, char *arg, struct arguments *argments)
       break;
     case 'h':
       print_usage();
-      return 0;
+      return 1;
       break;
     default:
       std::cout << "some option was wrong or missing." << std::endl;
@@ -230,7 +230,7 @@ int main(int argc,char* argv[])
       if(parsing_output == -1){
           fprintf(stderr, "Wrong argument. Parsing failed.");
           exit(EXIT_FAILURE);
-      }else if(parsing_output == 0){
+      }else if(parsing_output == 1){
           exit(EXIT_SUCCESS);
       }
   } 

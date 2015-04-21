@@ -1,5 +1,11 @@
 #ifndef GETTIMEOFDAY_H_
 #define GETTIMEOFDAY_H_
+#pragma message( "warning: gettimeofday disabled: defining NOTIME" )
+#define NOTIME 
+
+#ifndef NOTIME
+#define _WINSOCKAPI_    // stops windows.h including winsock.h
+#include <winsock2.h>
 #include <time.h>
 
 struct timezone 
@@ -14,5 +20,6 @@ extern "C" {
 int gettimeofday(struct timeval *tv, struct timezone *tz);
 #ifdef __cplusplus
 }
+#endif
 #endif
 #endif //GETTIMEOFDAY_H_

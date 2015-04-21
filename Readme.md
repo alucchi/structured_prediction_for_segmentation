@@ -28,35 +28,51 @@ Step-by-step instructions:
 
 	**UNIX**
 	
-	- OpenCv (Install package opencv-dev in Ubuntu or download from [http://opencv.org](http://opencv.org))
-	- [zlib](http://www.zlib.net/)
-	- SLIC: Go to `lib/slic`. Open CMakeLists.txt and change the OpenCV_DIR variable. Type `cmake .; make` to build the slic library.
-	- [ITK](http://itk.org) : Download from the [ITK web site](http://www.itk.org/ITK/resources/software.html) and set review flag to `ON`. This can be done by using the advanced mode with ccmake and settting the variable `USE_REVIEW` to ON.
+	- OpenCv (Install package opencv-dev in Ubuntu or download from [http://opencv.org](http://opencv.org)). Versions 3 and 2.4 work.
+	- [zlib](http://www.zlib.net/).  If you have problems with zlib, we recommend using the one shipped as a 3rdparty within `opencv`. Set `ZLIB_INCLUDE_DIR` to `3rdparty/zlib` and `ZLIB_LIBRARY` to `build/3rdpartz/lib/zlib.lib`
+	- [ITK](http://itk.org) : Download from the [ITK web site](http://www.itk.org/ITK/resources/software.html) and set review flag to `ON` (this can be done by using advanced mode with ccmake and settting variable `Module_ITKReview` to ON). Tested version 4.7.
+	- SLIC: Go to `lib/slic`. Type `ccmake ..`, change the OpenCV_DIR and then type `make` to build the slic library.
 	- Go to `lib/libDAI-0.2.4` and type `make`. Note that `libDAI` requires the following dependencies for Ubuntu:
 	 `sudo apt-get install g++ make doxygen graphviz libboost-dev libboost-graph-dev libboost-program-options-dev`
 	 
 	**WINDOWS**
+
+    We recommend using `MSBuild` to build. For example `"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe" opencv.sln /p:Configuration=Release /m`
 	
-	- [OpenCV](http://opencv.org): download archive from web site. Then create makefile with cmake and compile with `MSBuild.exe opencv.sln`
+	- [OpenCV](http://opencv.org): download archive from web site. Then create a Visual Studio solution with cmake (or cmake-gui). You might have to change the options to vuils a static library. Then compile with `MSBuild.exe opencv.sln`. Versions 3 and 2.4 work.
+	- [zlib](http://www.zlib.net/)
+	
+	If you have problems with zlib, we recommend using the one shipped as a 3rdparty within `opencv`. Set `ZLIB_INCLUDE_DIR` to `3rdparty/zlib` and `ZLIB_LIBRARY` to `build/3rdparty/lib/Release/zlib.lib`. In OpenCV 2.4 you may have to copy the generated `zconf.h` from `build/3rdparty/include` or `sources/build/3rdparty/zlib` to `3rdparty/zlib`, or include both paths.
+	
 	- SLIC: Go to `lib/slic` and type `cmake .; make`
-	- [ITK](http://itk.org): Download from the [ITK web site](http://www.itk.org/ITK/resources/software.html) and set review flag to `ON`. This can be done by using the advanced mode with ccmake and settting the variable `USE_REVIEW` to ON.
+	- [ITK](http://itk.org): Download from the [ITK web site](http://www.itk.org/ITK/resources/software.html) and set review flag to `ON` (can be done by using advanced mode with ccmake and settting variable `Module_ITKReview` to `ON`). Tested version 4.7.
 	- Go to `lib/libDAI-0.2.4` and type `cmake` and `MSBuild.exe dai.sln`. Note that `libDAI` requires `boost`.
-	- [OPTIONAL] Install `7-zip` to compress intermediary results
+    - Add [`dirent.h`](http://www.softagalleria.net/download/dirent/) to `core/`
+	- [OPTIONAL] Install `7-zip` to compress intermediary results.
+
 
 4. Main code
 
-	Edit the variables in the "THIRD-PARTY LIBRARIES" section in `CMakeLists_common.txt` (you can also use the ccmake interface).
+	Edit the variables in the "THIRD-PARTY LIBRARIES" section in `CMakeLists_common.txt` (you can also use the `ccmake` (UNIX) or `cmake-gui` (WINDOWS) interface).
 	You might want to turn off some of the dependencies. Look at the `USE_???` flags.
 
 	Go to the `superpixels_public` directory and compile with
 	
 	**UNIX**
 	
-	`cmake .; make`
+	`mkdir build
+	ccmake ..`
+	
+	Once configured and generated run
+	`make`
 	
 	**WINDOWS**
 		
-	`cmake .` and `MSBuild.exe sliceMe.sln` _or_ open the `sliceMe.sln` with Visual Studio.
+	`mkdir build
+	cmake-gui ..`
+
+	Once configured and generated run
+	`MSBuild.exe sliceMe.sln` _or_ open the `sliceMe.sln` with Visual Studio.
 
 5. Edit the config file
 

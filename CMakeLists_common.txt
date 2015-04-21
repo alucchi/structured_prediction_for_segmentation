@@ -1,14 +1,17 @@
-cmake_policy(SET CMP0011 NEW)
-cmake_policy(SET CMP0012 NEW)
+if(COMMAND cmake_policy)
+      cmake_policy(SET CMP0003 NEW)
+      cmake_policy(SET CMP0011 NEW)
+      cmake_policy(SET CMP0012 NEW)
+endif(COMMAND cmake_policy)
 
 INCLUDE_REGULAR_EXPRESSION("^.*$")
 
 if(WIN32)
     set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -D USE_REVERSE_INDEXING /O2")
-        #SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NODEFAULTLIB:msvcprt.lib ")
+    #SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NODEFAULTLIB:msvcprt.lib ")
 elseif(APPLE)
   set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -Wno-deprecated -msse2 -ftemplate-depth-50 -D USE_REVERSE_INDEXING ")
-  set(CMAKE_EXE_LINKER_FLAGS         "${CMAKE_LINKER_FLAGS} -Wno-deprecated -msse2 -ftemplate-depth-50")
+  set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_LINKER_FLAGS} -Wno-deprecated -msse2 -ftemplate-depth-50")
 elseif(UNIX)
   set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -D USE_REVERSE_INDEXING ")
   set(CMAKE_C_COMPILER "g++")
@@ -35,7 +38,7 @@ mark_as_advanced(USE_SIFT)
 
 
 if(WIN32)
-    SET(CMAKE_CXX_FLAGS "/DWIN32 /D_WINDOWS /w /Zi /EHsc /GR /MP /openmp ")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /DWIN32 /D_WINDOWS /w /Zi /EHsc /GR /MP /openmp ")
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /D_AMD64_ ")
 elseif(APPLE)
     set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -fopenmp")
@@ -50,29 +53,26 @@ else()
 endif()
 
 set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -D WITH_PNG -D WITH_OPENMP")
-set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -D USE_REVERSE_INDEXING")
 #set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -std=c++0x -std=gnu++0x")
 
-if(USE_ITK)
-  set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS}   -D USE_ITK")
-endif(USE_ITK)
-
-######################################################### THIRD-PARTY LIBRARIES
-
-set(ITK_DIR "~/src/InsightToolkit-4.7.1/build")
-set(OpenCV_DIR "~/src/opencv-3.0.0-alpha")
+###################################################################### THIRD_PARTY_LIBS
+set(OpenCV_DIR "~/src/opencv-3.0.0-alpha/build" CACHE PATH "opencv dir path" )
+set(ITK_DIR "~/src/InsightToolkit-4.7.1/build" CACHE PATH "itk dir path" )
 
 ###################################################################### PACKAGES
 
-# Open CV
-#include_directories(${OpenCV_DIR}/include/)
-#include_directories(${OpenCV_DIR}/include/opencv/)
+
+include_directories(${OPENCV_INCLUDE_DIRS_EXTRA}) 
+
 FIND_PACKAGE(OpenCV REQUIRED)
 # add include directories
-include_directories(${OPENCV_INCLUDE_DIR})
-message(STATUS ${OpenCV_LIBS})
-message(STATUS ${OpenCV_LIBRARIES})
-SET(OpenCV_LIBS ${OpenCV_LIBRARIES})
+include_directories(${OpenCV_INCLUDE_DIRS})
+#message(STATUS "OpenCV DIR: ${OpenCV_DIR}")
+#message(STATUS "OpenCV include dir: ${OpenCV_INCLUDE_DIRS}")
+message(STATUS "OpenCV libs: ${OpenCV_LIBS}")
+# OpenCV sometimes places libraries in weird places
+set(OpenCV_ADDITIONAL_LIB_DIRS "${OpenCV_DIR}/lib/" CACHE STRING "additional dirs where cmake should look for opencv libs")
+link_directories(${OpenCV_ADDITIONAL_LIB_DIRS})
 
 #Superpixel library
 find_library(SUPERPIXEL_LIBRARY NAMES supervoxel PATHS ${SLICEME_DIR}/lib/slic/
@@ -82,6 +82,7 @@ find_library(SUPERPIXEL_LIBRARY NAMES supervoxel PATHS ${SLICEME_DIR}/lib/slic/
 # ITK
 if(USE_ITK)
 find_package(ITK REQUIRED)
+set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS}   -D USE_ITK")
 endif(USE_ITK)
 
 ###################################################################### INCLUDES
@@ -99,14 +100,19 @@ include_directories(${SLICEME_DIR}/lib/slic/)
 if(USE_ITK)
 IF(ITK_FOUND)
   INCLUDE(${ITK_USE_FILE})
+  # include itk aux
+  # lib/itkStructureTensorRecursiveGaussianImageFilter.h
+  # lib/itkStructureTensorRecursiveGaussianImageFilter.txx
+  include_directories(${SLICEME_DIR}/lib/)
 ENDIF(ITK_FOUND)
 endif(USE_ITK)
 
 # libDAI
 if(USE_LIBDAI)
 include_directories(${SLICEME_DIR}/lib/libDAI024/include/)
-find_library(LIBDAI_LIBRARY NAMES dai PATHS ${SLICEME_DIR}/lib/libDAI024/
-                                            ${SLICEME_DIR}/lib/libDAI024/build/Release/)
+find_library(LIBDAI_LIBRARY NAMES dai PATHS "${SLICEME_DIR}/lib/libDAI024/"
+                                            "${SLICEME_DIR}/lib/libDAI024/build/"
+                                            "${SLICEME_DIR}/lib/libDAI024/build/Release/")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D USE_LIBDAI")
 #libDAI requires boost/foreach.hpp ? 
 find_package(Boost 1.37.0 COMPONENTS program_options REQUIRED)
@@ -138,14 +144,19 @@ find_library(SIFT_LIBRARY NAMES sift PATHS ${SLICEME_DIR}/lib/siftpp/g64)
 include_directories(${SLICEME_DIR}/lib/siftpp)
 endif(USE_SIFT)
 
-find_package(ZLIB)
-if(NOT ZLIB_FOUND)
-set(ZLIB_INCLUDE_DIRS ${SLICEME_DIR}/lib/zlib-1.2.3-lib/include)
-set(ZLIB_LIBRARIES ${SLICEME_DIR}/lib/zlib-1.2.3-lib/lib/zlib.lib)
-endif()
+find_package(ZLIB REQUIRED)
+#if(NOT ZLIB_FOUND)
+#set(ZLIB_INCLUDE_DIRS ${SLICEME_DIR}/lib/zlib-1.2.3-lib/include CACHE STRING "zlib include dir")
+#set(ZLIB_LIBRARIES ${SLICEME_DIR}/lib/zlib-1.2.3-lib/lib/zlib.lib CACHE STRING "zlib lib")
+#else()
+#set(ZLIB_INCLUDE_DIRS ${ZLIB_INCLUDE_DIR} CACHE STRING "zlib include dir")
+#set(ZLIB_LIBRARIES ${ZLIB_LIBRARY} CACHE STRING "zlib lib")
+#endif()
 
-include_directories(${ZLIB_INCLUDE_DIRS})
-message(status "zlib include dirs: ${ZLIB_INCLUDE_DIRS}")
+include_directories(${ZLIB_INCLUDE_DIR})
+
+#include_directories(${ZLIB_INCLUDE_DIRS})
+message(STATUS "zlib include dir: ${ZLIB_INCLUDE_DIRS}")
 
 ####################################################################### OPTIONS
 
@@ -241,13 +252,17 @@ ${SLICEME_DIR}/core/F_Sift.cpp
 ${SLICEME_DIR}/lib/siftpp/sift.cpp)
 endif(USE_SIFT)
 
-set(INFERENCE_THIRD_PARTY_LIBRARIES ${INFERENCE_THIRD_PARTY_LIBRARIES} ${ZLIB_LIBRARIES})
+set(INFERENCE_THIRD_PARTY_LIBRARIES ${INFERENCE_THIRD_PARTY_LIBRARIES} ${ZLIB_LIBRARIES} ${ZLIB_LIBRARY})
 
 ##################################################################### LIBRARIES
 
-set(SLICEME_THIRD_PARTY_LIBRARIES ${OpenCV_LIBRARIES} ${SUPERPIXEL_LIBRARY} ${INFERENCE_THIRD_PARTY_LIBRARIES})
+set(SLICEME_THIRD_PARTY_LIBRARIES ${OpenCV_LIBS} ${SUPERPIXEL_LIBRARY} ${INFERENCE_THIRD_PARTY_LIBRARIES})
 
 if(USE_ITK)
-set(SLICEME_THIRD_PARTY_LIBRARIES ${SLICEME_THIRD_PARTY_LIBRARIES} ITKIO ITKStatistics)
-endif(USE_ITK)
+    if( ${ITK_VERSION_MAJOR} VERSION_LESS "4.0")
+        set(SLICEME_THIRD_PARTY_LIBRARIES ${SLICEME_THIRD_PARTY_LIBRARIES} ITKIO ITKStatistics)
+    else()
+      set(SLICEME_THIRD_PARTY_LIBRARIES ${SLICEME_THIRD_PARTY_LIBRARIES} ${ITK_LIBRARIES})
+    endif()
+endif()
 

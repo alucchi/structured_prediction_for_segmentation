@@ -47,11 +47,20 @@ namespace itk
 // of "typename" because VC++ doesn't like the typename keyword
 // on the defaults of template parameters
 template <typename TInputImage,
+#if ITK_VERSION_MAJOR < 4
           typename TOutputImage= Image< SymmetricSecondRankTensor<
-  ITK_TYPENAME NumericTraits< ITK_TYPENAME TInputImage::PixelType>
-  ::RealType,
-  ::itk::GetImageDimension<TInputImage>::ImageDimension >,
-  ::itk::GetImageDimension<TInputImage>::ImageDimension > >
+          ITK_TYPENAME NumericTraits< ITK_TYPENAME TInputImage::PixelType>
+          ::RealType,
+          ::itk::GetImageDimension<TInputImage>::ImageDimension >,
+          ::itk::GetImageDimension<TInputImage>::ImageDimension > >
+#else
+          typename TOutputImage= Image< SymmetricSecondRankTensor<
+          typename NumericTraits< typename TInputImage::PixelType>
+          ::RealType,
+          TInputImage::ImageDimension >,
+          TInputImage::ImageDimension > >
+#endif
+
 class ITK_EXPORT StructureTensorRecursiveGaussianImageFilter:
     public ImageToImageFilter<TInputImage,TOutputImage>
 {

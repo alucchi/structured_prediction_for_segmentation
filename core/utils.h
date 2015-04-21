@@ -466,6 +466,7 @@ typename LabelImageType::Pointer getLabelImage(TInputPixelType* inputData,
   return labelImage;
 }
 
+#if ITK_VERSION_MAJOR < 4
 template <typename TInputPixelType>
 ulong compareConnectedComponents(TInputPixelType* inputData,
                                  TInputPixelType* annotationData,
@@ -536,7 +537,7 @@ ulong compareConnectedComponents(TInputPixelType* inputData,
 
   return nDetectedObjects;
 }
-
+#endif
 
 template <typename TInputPixelType>
 ulong countConnectedComponents(TInputPixelType* inputData,
