@@ -1,6 +1,6 @@
 #ifndef GETTIMEOFDAY_H_
 #define GETTIMEOFDAY_H_
-#warning "gettimeofday disabled: defining NOTIME "
+#pragma message( "warning: gettimeofday disabled: defining NOTIME" )
 #define NOTIME 
 
 #ifndef NOTIME
