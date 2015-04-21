@@ -42,7 +42,7 @@ Step-by-step instructions:
 
     We recommend using `MSBuild` to build. For example `"C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe" opencv.sln /p:Configuration=Release /m`
 	
-	- [OpenCV](http://opencv.org): download archive from web site. Then create makefile with cmake and compile with `MSBuild.exe opencv.sln`. Versions 3 and 2.4 work.
+	- [OpenCV](http://opencv.org): download archive from web site. Then create a Visual Studio solution with cmake (or cmake-gui). You might have to change the options to vuils a static library. Then compile with `MSBuild.exe opencv.sln`. Versions 3 and 2.4 work.
 	- [zlib](http://www.zlib.net/)
 	
 	If you have problems with zlib, we recommend using the one shipped as a 3rdparty within `opencv`. Set `ZLIB_INCLUDE_DIR` to `3rdparty/zlib` and `ZLIB_LIBRARY` to `build/3rdparty/lib/Release/zlib.lib`. In OpenCV 2.4 you may have to copy the generated `zconf.h` from `build/3rdparty/include` or `sources/build/3rdparty/zlib` to `3rdparty/zlib`, or include both paths.
