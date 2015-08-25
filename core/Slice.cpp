@@ -343,7 +343,7 @@ Slice::~Slice()
 void Slice::exportSuperpixels(const char* filename)
 {
   ofstream ofs(filename, ios::binary);
-  ofs.write((char*)&(pixelLabels), sizeof(sidType)*img->width*img->height);
+  ofs.write((char*)(pixelLabels), sizeof(sidType)*img->width*img->height);
   ofs.close();
 }
 
