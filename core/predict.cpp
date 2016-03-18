@@ -271,6 +271,12 @@ int main(int argc,char* argv[])
   if(config->getParameter("giType", config_tmp)) {
     args.algo_type = atoi(config_tmp.c_str());
     printf("[SVM_struct] giType = %d\n", args.algo_type);
+    if(args.algo_type == T_GI_MULTIOBJ && param.nClasses == 2) {
+      args.algo_type = T_GI_MAXFLOW;
+    }
+    if(args.algo_type == T_GI_MULTIOBJ && param.nClasses > 3) {
+      args.algo_type = T_GI_LIBDAI;
+    }    
   }
 
   EnergyParam param(args.weight_file);

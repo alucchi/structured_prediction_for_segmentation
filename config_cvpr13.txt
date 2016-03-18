@@ -4,3 +4,4 @@ testDir=datasets/imagesLeft_35-199_bottom/
 maskTestDir=datasets/masksLeft_35-199_bottom/
 nClasses=2
 includeBoundaryLabels=0
+enforce_submodularity=1
