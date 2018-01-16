@@ -267,7 +267,9 @@ int main(int argc,char* argv[])
     paramFeatureTypes = atoi(config_tmp.c_str());
     getFeatureTypes(paramFeatureTypes, feature_types);
   }
-
+  
+  EnergyParam param(args.weight_file);
+  
   if(config->getParameter("giType", config_tmp)) {
     args.algo_type = atoi(config_tmp.c_str());
     printf("[SVM_struct] giType = %d\n", args.algo_type);
@@ -278,8 +280,6 @@ int main(int argc,char* argv[])
       args.algo_type = T_GI_LIBDAI;
     }    
   }
-
-  EnergyParam param(args.weight_file);
 
   // TODO: Find a better way to change the labels!
   if(param.nClasses == 3) {
